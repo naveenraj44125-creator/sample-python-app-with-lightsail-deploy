@@ -1,0 +1,95 @@
+# Deployment Configuration
+# This file configures the reusable deployment workflow
+
+aws:
+  region: us-east-1
+
+lightsail:
+  instance_name: sample-python-app
+  static_ip: 23.20.95.172
+
+application:
+  name: sample-python-app-with-lightsail-deploy
+  type: web
+  version: 1.0.0
+  package_files:
+    - app.py
+    - requirements.txt
+    - templates/
+  package_fallback: true
+
+dependencies:
+  # Web Servers
+  apache:
+    enabled: false
+    version: "latest"
+  
+  nginx:
+    enabled: true
+    version: "latest"
+    config:
+      document_root: "/var/www/html"
+      enable_ssl: false
+  
+  # Databases
+  mysql:
+    enabled: true
+    version: "latest"
+  
+  postgresql:
+    enabled: false
+    version: "latest"
+  
+  # Programming Languages
+  php:
+    enabled: false
+    version: "8.3"
+  
+  python:
+    enabled: true
+    version: "3.9"
+    config:
+      pip_packages: []
+      virtual_env: true
+  
+  nodejs:
+    enabled: false
+    version: "18"
+  
+  # Additional Services
+  redis:
+    enabled: true
+    version: "latest"
+  
+  memcached:
+    enabled: false
+    version: "latest"
+  
+  docker:
+    enabled: true
+    version: "latest"
+    config:
+      enable_compose: true
+  
+  # System Tools
+  git:
+    enabled: true
+    config:
+      install_lfs: false
+  
+  firewall:
+    enabled: true
+    config:
+      allowed_ports:
+        - "22"
+        - "80"
+        - "443"
+      deny_all_other: true
+
+github_actions:
+  triggers:
+    push_branches:
+      - main
+  jobs:
+    test:
+      enabled: true

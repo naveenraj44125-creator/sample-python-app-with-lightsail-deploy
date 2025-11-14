@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Managers - Action Items Tracker{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h2>Managers</h2>
+    <a href="{{ url_for('add_manager') }}" class="btn">+ Add Manager</a>
+</div>
+
+{% if managers %}
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Employees</th>
+            <th>Created</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for manager in managers %}
+        <tr>
+            <td><strong>{{ manager.name }}</strong></td>
+            <td>{{ manager.email }}</td>
+            <td>{{ manager.employee_count }}</td>
+            <td>{{ manager.created_at[:10] }}</td>
+            <td>
+                <a href="{{ url_for('manager_detail', manager_id=manager.id) }}" class="btn btn-sm">View Details</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No managers found. <a href="{{ url_for('add_manager') }}">Add the first manager</a></p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Add Employee - Action Items Tracker{% endblock %}
+
+{% block content %}
+<h2>Add New Employee</h2>
+
+<form method="POST" style="max-width: 600px;">
+    <div class="form-group">
+        <label for="name">Name *</label>
+        <input type="text" id="name" name="name" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="email">Email *</label>
+        <input type="email" id="email" name="email" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="manager_id">Manager *</label>
+        <select id="manager_id" name="manager_id" required>
+            <option value="">Select a manager</option>
+            {% for manager in managers %}
+            <option value="{{ manager.id }}">{{ manager.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label for="position">Position</label>
+        <input type="text" id="position" name="position" placeholder="e.g., Software Engineer">
+    </div>
+    
+    <div style="display: flex; gap: 10px;">
+        <button type="submit" class="btn">Add Employee</button>
+        <a href="{{ url_for('employees') }}" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+{% endblock %}

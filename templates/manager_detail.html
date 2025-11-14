@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}{{ manager.name }} - Action Items Tracker{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 30px;">
+    <a href="{{ url_for('managers') }}" class="btn btn-secondary btn-sm">← Back to Managers</a>
+</div>
+
+<h2>{{ manager.name }}</h2>
+<p><strong>Email:</strong> {{ manager.email }}</p>
+
+<h3 style="margin-top: 30px;">Team Members ({{ employees|length }})</h3>
+{% if employees %}
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Position</th>
+            <th>Action Items</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for employee in employees %}
+        <tr>
+            <td>{{ employee.name }}</td>
+            <td>{{ employee.email }}</td>
+            <td>{{ employee.position or 'N/A' }}</td>
+            <td>{{ employee.action_count }}</td>
+            <td>
+                <a href="{{ url_for('employee_detail', employee_id=employee.id) }}" class="btn btn-sm">View</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No employees yet. <a href="{{ url_for('add_employee') }}">Add an employee</a></p>
+{% endif %}
+
+<h3 style="margin-top: 30px;">Action Items ({{ action_items|length }})</h3>
+{% if action_items %}
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Employee</th>
+            <th>Status</th>
+            <th>Priority</th>
+            <th>Due Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for action in action_items %}
+        <tr>
+            <td>{{ action.title }}</td>
+            <td>{{ action.employee_name }}</td>
+            <td><span class="badge badge-{{ action.status }}">{{ action.status }}</span></td>
+            <td><span class="badge badge-{{ action.priority }}">{{ action.priority }}</span></td>
+            <td>{{ action.due_date or 'No due date' }}</td>
+            <td>
+                <form method="POST" action="{{ url_for('update_action', action_id=action.id) }}" style="display: inline;">
+                    <input type="hidden" name="status" value="{% if action.status == 'pending' %}in_progress{% elif action.status == 'in_progress' %}completed{% else %}pending{% endif %}">
+                    <button type="submit" class="btn btn-sm btn-success">
+                        {% if action.status == 'pending' %}Start{% elif action.status == 'in_progress' %}Complete{% else %}Reopen{% endif %}
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No action items yet. <a href="{{ url_for('add_action') }}">Create one</a></p>
+{% endif %}
+{% endblock %}

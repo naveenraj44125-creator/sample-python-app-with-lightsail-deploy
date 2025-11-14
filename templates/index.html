@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Action Items Tracker{% endblock %}
+
+{% block content %}
+<h2>Dashboard</h2>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>{{ stats.total_managers }}</h3>
+        <p>Managers</p>
+    </div>
+    <div class="stat-card">
+        <h3>{{ stats.total_employees }}</h3>
+        <p>Employees</p>
+    </div>
+    <div class="stat-card">
+        <h3>{{ stats.total_actions }}</h3>
+        <p>Total Actions</p>
+    </div>
+    <div class="stat-card">
+        <h3>{{ stats.pending_actions }}</h3>
+        <p>Pending</p>
+    </div>
+    <div class="stat-card">
+        <h3>{{ stats.completed_actions }}</h3>
+        <p>Completed</p>
+    </div>
+</div>
+
+<h3>Recent Action Items</h3>
+{% if recent_actions %}
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Employee</th>
+            <th>Manager</th>
+            <th>Status</th>
+            <th>Priority</th>
+            <th>Due Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for action in recent_actions %}
+        <tr>
+            <td>{{ action.title }}</td>
+            <td>{{ action.employee_name }}</td>
+            <td>{{ action.manager_name }}</td>
+            <td><span class="badge badge-{{ action.status }}">{{ action.status }}</span></td>
+            <td><span class="badge badge-{{ action.priority }}">{{ action.priority }}</span></td>
+            <td>{{ action.due_date or 'No due date' }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No action items yet. <a href="{{ url_for('add_action') }}">Create one</a></p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Employees - Action Items Tracker{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h2>Employees</h2>
+    <a href="{{ url_for('add_employee') }}" class="btn">+ Add Employee</a>
+</div>
+
+{% if employees %}
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Position</th>
+            <th>Manager</th>
+            <th>Action Items</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for employee in employees %}
+        <tr>
+            <td><strong>{{ employee.name }}</strong></td>
+            <td>{{ employee.email }}</td>
+            <td>{{ employee.position or 'N/A' }}</td>
+            <td>{{ employee.manager_name }}</td>
+            <td>{{ employee.action_count }}</td>
+            <td>
+                <a href="{{ url_for('employee_detail', employee_id=employee.id) }}" class="btn btn-sm">View Details</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No employees found. <a href="{{ url_for('add_employee') }}">Add the first employee</a></p>
+{% endif %}
+{% endblock %}
