@@ -15,17 +15,20 @@ application:
   package_files:
     - app.py
     - requirements.txt
-    - templates/
   package_fallback: true
 
 dependencies:
   # Web Servers
   apache:
-    enabled: false
+    enabled: {str(config.get('use_apache', False)).lower()}
     version: "latest"
+    config:
+      document_root: "/var/www/html"
+      enable_ssl: false
+      enable_rewrite: true
   
   nginx:
-    enabled: true
+    enabled: {str(config.get('use_nginx', True)).lower()}
     version: "latest"
     config:
       document_root: "/var/www/html"
@@ -33,52 +36,63 @@ dependencies:
   
   # Databases
   mysql:
-    enabled: true
+    enabled: {str(config.get('use_mysql', False)).lower()}
     version: "latest"
   
   postgresql:
-    enabled: false
+    enabled: {str(config.get('use_postgresql', False)).lower()}
     version: "latest"
   
   # Programming Languages
   php:
-    enabled: false
+    enabled: {str(config.get('use_php', False)).lower()}
     version: "8.3"
+    config:
+      extensions:
+        - "pgsql"
+        - "curl"
+        - "mbstring"
+        - "xml"
+        - "zip"
+      enable_composer: true
   
   python:
-    enabled: true
+    enabled: {str(config.get('use_python', False)).lower()}
     version: "3.9"
     config:
       pip_packages: []
       virtual_env: true
   
   nodejs:
-    enabled: false
+    enabled: {str(config.get('use_nodejs', True)).lower()}
     version: "18"
+    config:
+      npm_packages: []
+      package_manager: "npm"
   
   # Additional Services
   redis:
-    enabled: true
+    enabled: {str(config.get('use_redis', False)).lower()}
     version: "latest"
   
   memcached:
-    enabled: false
+    enabled: {str(config.get('use_memcached', False)).lower()}
     version: "latest"
   
   docker:
-    enabled: true
+    enabled: {str(config.get('use_docker', False)).lower()}
     version: "latest"
     config:
       enable_compose: true
   
   # System Tools
   git:
-    enabled: true
+    enabled: {str(config.get('use_git', True)).lower()}
     config:
       install_lfs: false
   
   firewall:
-    enabled: true
+    enabled: {str(config.get('use_firewall', True)).lower()}
     config:
       allowed_ports:
         - "22"
