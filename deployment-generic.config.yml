@@ -5,11 +5,11 @@ aws:
   region: us-east-1
 
 lightsail:
-  instance_name: sample-python-app
-  static_ip: 23.20.95.172
+  instance_name: sample-python-app-1
+  static_ip: 34.234.203.242
 
 application:
-  name: sample-python-app-lightsail-deploy
+  name: sample-python-app-with-lightsail-deploy
   type: web
   version: 1.0.0
   package_files:
@@ -21,15 +21,10 @@ application:
 dependencies:
   # Web Servers
   apache:
-    enabled: {str(config.get('use_apache', False)).lower()}
-    version: "latest"
-    config:
-      document_root: "/var/www/html"
-      enable_ssl: false
-      enable_rewrite: true
+    enabled: false
   
   nginx:
-    enabled: {str(config.get('use_nginx', True)).lower()}
+    enabled: true
     version: "latest"
     config:
       document_root: "/var/www/html"
@@ -37,63 +32,43 @@ dependencies:
   
   # Databases
   mysql:
-    enabled: {str(config.get('use_mysql', False)).lower()}
+    enabled: true
     version: "latest"
   
   postgresql:
-    enabled: {str(config.get('use_postgresql', False)).lower()}
-    version: "latest"
+    enabled: false
   
   # Programming Languages
   php:
-    enabled: {str(config.get('use_php', False)).lower()}
-    version: "8.3"
-    config:
-      extensions:
-        - "pgsql"
-        - "curl"
-        - "mbstring"
-        - "xml"
-        - "zip"
-      enable_composer: true
+    enabled: false
   
   python:
-    enabled: {str(config.get('use_python', False)).lower()}
+    enabled: true
     version: "3.9"
     config:
       pip_packages: []
       virtual_env: true
   
   nodejs:
-    enabled: {str(config.get('use_nodejs', True)).lower()}
-    version: "18"
-    config:
-      npm_packages: []
-      package_manager: "npm"
+    enabled: false
   
   # Additional Services
   redis:
-    enabled: {str(config.get('use_redis', False)).lower()}
+    enabled: true
     version: "latest"
   
   memcached:
-    enabled: {str(config.get('use_memcached', False)).lower()}
-    version: "latest"
+    enabled: false
   
   docker:
-    enabled: {str(config.get('use_docker', False)).lower()}
-    version: "latest"
-    config:
-      enable_compose: true
+    enabled: false
   
   # System Tools
   git:
-    enabled: {str(config.get('use_git', True)).lower()}
-    config:
-      install_lfs: false
+    enabled: false
   
   firewall:
-    enabled: {str(config.get('use_firewall', True)).lower()}
+    enabled: true
     config:
       allowed_ports:
         - "22"
@@ -107,4 +82,4 @@ github_actions:
       - main
   jobs:
     test:
-      enabled: true
+      enabled: false
