@@ -8,7 +8,7 @@ This application uses a reusable GitHub Actions workflow for automated deploymen
 
 ### Configuration
 
-- **Instance**: sample-python-app
+- **Instance**: sample-python-app-1
 - **Region**: us-east-1
 - **Type**: web
 

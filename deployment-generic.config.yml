@@ -5,8 +5,8 @@ aws:
   region: us-east-1
 
 lightsail:
-  instance_name: sample-python-app
-  static_ip: 23.20.95.172
+  instance_name: sample-python-app-1
+  static_ip: 34.234.203.242
 
 application:
   name: sample-python-app-with-lightsail-deploy
